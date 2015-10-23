@@ -1,0 +1,516 @@
+  [1m[36m (7.2ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.2ms)[0m  select sqlite_version(*)
+  [1m[36m (4.0ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to CreateDoctors (20151023032028)
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  CREATE TABLE "doctors" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "address" varchar, "city" varchar, "state" varchar, "zip" integer, "school" varchar, "years_in_practice" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (1.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151023032028"]]
+  [1m[35m (11.6ms)[0m  commit transaction
+Migrating to CreateAppointments (20151023032506)
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35m (1.6ms)[0m  CREATE TABLE "appointments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "date_of_visit" date, "reminder_of_appointment" varchar, "reason_for_visit" varchar, "pet_id" integer, "doctor_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.4ms)[0m  [1mCREATE  INDEX "index_appointments_on_pet_id" ON "appointments" ("pet_id")[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_appointments_on_pet_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_appointments_on_pet_id' AND type='index'
+
+  [1m[36m (0.5ms)[0m  [1mCREATE  INDEX "index_appointments_on_doctor_id" ON "appointments" ("doctor_id")[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151023032506"]]
+  [1m[36m (8.9ms)[0m  [1mcommit transaction[0m
+Migrating to CreatePets (20151023032640)
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36m (0.9ms)[0m  [1mCREATE TABLE "pets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "pet_name" varchar, "type_of_pet" varchar, "breed" varchar, "age" integer, "weight" integer, "date_of_visit" date, "customer_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (1.6ms)[0m  CREATE  INDEX "index_pets_on_customer_id" ON "pets" ("customer_id")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151023032640"]]
+  [1m[35m (9.7ms)[0m  commit transaction
+Migrating to CreateCustomers (20151023032721)
+  [1m[36m (0.3ms)[0m  [1mbegin transaction[0m
+  [1m[35m (1.2ms)[0m  CREATE TABLE "customers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "customer_name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151023032721"]]
+  [1m[35m (8.3ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.4ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_appointments_on_doctor_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_appointments_on_doctor_id' AND type='index'
+
+  [1m[36m (0.5ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_appointments_on_pet_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_appointments_on_pet_id' AND type='index'
+[0m
+  [1m[35m (0.3ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_pets_on_customer_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_pets_on_customer_id' AND type='index'
+
+
+
+Started GET "/doctors" for 127.0.0.1 at 2015-10-22 23:28:38 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by DoctorsController#index as HTML
+  [1m[35mDoctor Load (0.3ms)[0m  SELECT "doctors".* FROM "doctors"
+  Rendered doctors/index.html.erb within layouts/application (4.6ms)
+Completed 200 OK in 2115ms (Views: 2051.5ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/assets/scaffolds.self-8bc069b1cc8615f7cc7ee246427eb7bb124dbdab61010f58cc7d0505e8d267f6.css?body=1" for 127.0.0.1 at 2015-10-22 23:28:41 -0400
+
+
+Started GET "/doctors/new" for 127.0.0.1 at 2015-10-22 23:28:43 -0400
+Processing by DoctorsController#new as HTML
+  Rendered doctors/_form.html.erb (74.4ms)
+  Rendered doctors/new.html.erb within layouts/application (80.2ms)
+Completed 200 OK in 172ms (Views: 164.0ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/doctors" for 127.0.0.1 at 2015-10-22 23:28:45 -0400
+Processing by DoctorsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"s58U0UHGeOY7YQZpQzfmHH+pNwWdSpcjVdO06ufyyrJBU7fmO664byQ9QKKG5KeRJob0PuyvSc2AIu+tzvdIyQ==", "doctor"=>{"name"=>"", "address"=>"", "city"=>"", "state"=>"", "zip"=>"", "school"=>"", "years_in_practice"=>""}, "commit"=>"Create Doctor"}
+  [1m[36m (0.4ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "doctors" ("name", "address", "city", "state", "school", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["name", ""], ["address", ""], ["city", ""], ["state", ""], ["school", ""], ["created_at", "2015-10-23 03:28:45.196507"], ["updated_at", "2015-10-23 03:28:45.196507"]]
+  [1m[36m (18.9ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/doctors/1
+Completed 302 Found in 38ms (ActiveRecord: 20.0ms)
+
+
+Started GET "/doctors/1" for 127.0.0.1 at 2015-10-22 23:28:45 -0400
+Processing by DoctorsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mDoctor Load (1.3ms)[0m  SELECT  "doctors".* FROM "doctors" WHERE "doctors"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered doctors/show.html.erb within layouts/application (20.5ms)
+Completed 200 OK in 289ms (Views: 178.9ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/appointments" for 127.0.0.1 at 2015-10-22 23:28:54 -0400
+Processing by AppointmentsController#index as HTML
+  [1m[36mAppointment Load (0.2ms)[0m  [1mSELECT "appointments".* FROM "appointments"[0m
+  Rendered appointments/index.html.erb within layouts/application (5.9ms)
+Completed 200 OK in 119ms (Views: 83.4ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/appointments/new" for 127.0.0.1 at 2015-10-22 23:28:56 -0400
+Processing by AppointmentsController#new as HTML
+  Rendered appointments/_form.html.erb (35.2ms)
+  Rendered appointments/new.html.erb within layouts/application (65.0ms)
+Completed 200 OK in 274ms (Views: 230.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/appointments" for 127.0.0.1 at 2015-10-22 23:28:58 -0400
+Processing by AppointmentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"OwczmvRlMS97f62VJDe5DVkcsLFqbaVuTn735LCjU+bJy5Ctjg3xpmQj617h5PiAADNzihuIe4Cbj6yjmabRnQ==", "appointment"=>{"date_of_visit(1i)"=>"2015", "date_of_visit(2i)"=>"10", "date_of_visit(3i)"=>"23", "reminder_of_appointment"=>"", "reason_for_visit"=>"", "pet_id"=>"", "doctor_id"=>""}, "commit"=>"Create Appointment"}
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "appointments" ("reminder_of_appointment", "reason_for_visit", "date_of_visit", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["reminder_of_appointment", ""], ["reason_for_visit", ""], ["date_of_visit", "2015-10-23"], ["created_at", "2015-10-23 03:28:58.153489"], ["updated_at", "2015-10-23 03:28:58.153489"]]
+  [1m[35m (4.9ms)[0m  commit transaction
+Redirected to http://localhost:3000/appointments/1
+Completed 302 Found in 21ms (ActiveRecord: 5.7ms)
+
+
+Started GET "/appointments/1" for 127.0.0.1 at 2015-10-22 23:28:58 -0400
+Processing by AppointmentsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mAppointment Load (0.3ms)[0m  [1mSELECT  "appointments".* FROM "appointments" WHERE "appointments"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered appointments/show.html.erb within layouts/application (16.6ms)
+Completed 200 OK in 93ms (Views: 89.9ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/pets" for 127.0.0.1 at 2015-10-22 23:29:33 -0400
+Processing by PetsController#index as HTML
+  [1m[35mPet Load (0.3ms)[0m  SELECT "pets".* FROM "pets"
+  Rendered pets/index.html.erb within layouts/application (3.6ms)
+Completed 200 OK in 116ms (Views: 113.4ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/pets/new" for 127.0.0.1 at 2015-10-22 23:29:36 -0400
+Processing by PetsController#new as HTML
+  Rendered pets/_form.html.erb (9.3ms)
+  Rendered pets/new.html.erb within layouts/application (11.0ms)
+Completed 200 OK in 75ms (Views: 68.0ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/pets" for 127.0.0.1 at 2015-10-22 23:29:38 -0400
+Processing by PetsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"b2DKULR7ioxlt/Gb/a4WxeXeuKuKASWEY1R83FNZrF6drGlnzhNKBXrrt1A4fVdIvPF7kPvk+2q2pSebelwuJQ==", "pet"=>{"pet_name"=>"", "type_of_pet"=>"", "breed"=>"", "age"=>"", "weight"=>"", "date_of_visit(1i)"=>"2015", "date_of_visit(2i)"=>"10", "date_of_visit(3i)"=>"23", "customer_id"=>""}, "commit"=>"Create Pet"}
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "pets" ("pet_name", "type_of_pet", "breed", "date_of_visit", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["pet_name", ""], ["type_of_pet", ""], ["breed", ""], ["date_of_visit", "2015-10-23"], ["created_at", "2015-10-23 03:29:38.079950"], ["updated_at", "2015-10-23 03:29:38.079950"]]
+  [1m[36m (11.7ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/pets/1
+Completed 302 Found in 19ms (ActiveRecord: 12.2ms)
+
+
+Started GET "/pets/1" for 127.0.0.1 at 2015-10-22 23:29:38 -0400
+Processing by PetsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mPet Load (0.9ms)[0m  SELECT  "pets".* FROM "pets" WHERE "pets"."id" = ? LIMIT 1  [["id", 1]]
+  Rendered pets/show.html.erb within layouts/application (4.9ms)
+Completed 200 OK in 95ms (Views: 90.7ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/customers" for 127.0.0.1 at 2015-10-22 23:29:50 -0400
+Processing by CustomersController#index as HTML
+  [1m[36mCustomer Load (0.4ms)[0m  [1mSELECT "customers".* FROM "customers"[0m
+  Rendered customers/index.html.erb within layouts/application (13.1ms)
+Completed 200 OK in 111ms (Views: 106.9ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/customers/new" for 127.0.0.1 at 2015-10-22 23:29:53 -0400
+Processing by CustomersController#new as HTML
+  Rendered customers/_form.html.erb (3.4ms)
+  Rendered customers/new.html.erb within layouts/application (5.3ms)
+Completed 200 OK in 77ms (Views: 72.6ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/customers" for 127.0.0.1 at 2015-10-22 23:29:54 -0400
+Processing by CustomersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"XKJsYeiRJqMtD8DCnHHtgJjqSVRab4Zj9/PAXRr+sruubs9WkvnmKjJThglZoqwNwcWKbyuKWI0iApsaM/swwA==", "customer"=>{"customer_name"=>""}, "commit"=>"Create Customer"}
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "customers" ("customer_name", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["customer_name", ""], ["created_at", "2015-10-23 03:29:54.357218"], ["updated_at", "2015-10-23 03:29:54.357218"]]
+  [1m[35m (9.4ms)[0m  commit transaction
+Redirected to http://localhost:3000/customers/1
+Completed 302 Found in 18ms (ActiveRecord: 10.0ms)
+
+
+Started GET "/customers/1" for 127.0.0.1 at 2015-10-22 23:29:54 -0400
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mCustomer Load (0.4ms)[0m  [1mSELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1[0m  [["id", 1]]
+  Rendered customers/show.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 86ms (Views: 82.3ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/doctors" for 127.0.0.1 at 2015-10-22 23:36:59 -0400
+Processing by DoctorsController#index as HTML
+  [1m[35mDoctor Load (0.5ms)[0m  SELECT "doctors".* FROM "doctors"
+  Rendered doctors/index.html.erb within layouts/application (13.6ms)
+Completed 200 OK in 105ms (Views: 98.0ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/doctors/new" for 127.0.0.1 at 2015-10-22 23:37:02 -0400
+Processing by DoctorsController#new as HTML
+  Rendered doctors/_form.html.erb (4.6ms)
+  Rendered doctors/new.html.erb within layouts/application (5.8ms)
+Completed 200 OK in 81ms (Views: 79.6ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/doctors" for 127.0.0.1 at 2015-10-22 23:37:04 -0400
+Processing by DoctorsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"8niYiaL4yhY9k7CdfyEsngiYoJhsGMgzfiEopW6Lol8AtDu+2JAKnyLP9la68m0TUbdjox39Ft2r0HPiR44gJA==", "doctor"=>{"name"=>"", "address"=>"", "city"=>"", "state"=>"", "zip"=>"", "school"=>"", "years_in_practice"=>""}, "commit"=>"Create Doctor"}
+  [1m[36m (0.3ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  rollback transaction
+  Rendered doctors/_form.html.erb (29.6ms)
+  Rendered doctors/new.html.erb within layouts/application (32.9ms)
+Completed 200 OK in 236ms (Views: 222.3ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/doctors" for 127.0.0.1 at 2015-10-22 23:37:21 -0400
+Processing by DoctorsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"NtFNedsZ/ojlukWTAId3zWU+PNDBA6XTV6xTGzjwHanEHe5OoXE+AfrmA1jFVDZAPBH/67Dmez2CXQhcEfWf0g==", "doctor"=>{"name"=>"qqqded", "address"=>"", "city"=>"", "state"=>"", "zip"=>"1", "school"=>"", "years_in_practice"=>"101"}, "commit"=>"Create Doctor"}
+  [1m[36m (0.4ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  rollback transaction
+  Rendered doctors/_form.html.erb (28.0ms)
+  Rendered doctors/new.html.erb within layouts/application (34.3ms)
+Completed 200 OK in 283ms (Views: 261.8ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/doctors" for 127.0.0.1 at 2015-10-22 23:37:31 -0400
+Processing by DoctorsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"cQcO5thLRa4FJW8b603BA98eir5dSVeROUSu5b5de1WDy63RoiOFJxp5KdAunoCOhjFJhSysiX/stfWil1j5Lg==", "doctor"=>{"name"=>"qqqded", "address"=>"", "city"=>"", "state"=>"", "zip"=>"1", "school"=>"", "years_in_practice"=>"100"}, "commit"=>"Create Doctor"}
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (4.7ms)[0m  INSERT INTO "doctors" ("name", "address", "city", "state", "zip", "school", "years_in_practice", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)  [["name", "qqqded"], ["address", ""], ["city", ""], ["state", ""], ["zip", 1], ["school", ""], ["years_in_practice", 100], ["created_at", "2015-10-23 03:37:31.871112"], ["updated_at", "2015-10-23 03:37:31.871112"]]
+  [1m[36m (5.0ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/doctors/2
+Completed 302 Found in 18ms (ActiveRecord: 9.8ms)
+
+
+Started GET "/doctors/2" for 127.0.0.1 at 2015-10-22 23:37:31 -0400
+Processing by DoctorsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[35mDoctor Load (0.5ms)[0m  SELECT  "doctors".* FROM "doctors" WHERE "doctors"."id" = ? LIMIT 1  [["id", 2]]
+  Rendered doctors/show.html.erb within layouts/application (0.7ms)
+Completed 200 OK in 87ms (Views: 84.0ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/doctors" for 127.0.0.1 at 2015-10-23 00:01:11 -0400
+Processing by DoctorsController#index as HTML
+  [1m[36mDoctor Load (0.5ms)[0m  [1mSELECT "doctors".* FROM "doctors"[0m
+  Rendered doctors/index.html.erb within layouts/application (9.7ms)
+Completed 200 OK in 106ms (Views: 85.9ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/doctors/new" for 127.0.0.1 at 2015-10-23 00:01:13 -0400
+Processing by DoctorsController#new as HTML
+  Rendered doctors/_form.html.erb (5.5ms)
+  Rendered doctors/new.html.erb within layouts/application (6.5ms)
+Completed 200 OK in 71ms (Views: 70.2ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/doctors" for 127.0.0.1 at 2015-10-23 00:01:44 -0400
+Processing by DoctorsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"6YDU65MH+6D6v1aqLfYvG2r8CjgeWNLR5Uj4+2p0X1kbTHfc6W87KeXjEGHoJW6WM9PJA2+9DD8wuaO8Q3HdIg==", "doctor"=>{"name"=>"customer1", "address"=>"abc", "city"=>"michigan", "state"=>"tx", "zip"=>"12345", "school"=>"wesdtyf", "years_in_practice"=>"1"}, "commit"=>"Create Doctor"}
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (23.9ms)[0m  [1mINSERT INTO "doctors" ("name", "address", "city", "state", "zip", "school", "years_in_practice", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["name", "customer1"], ["address", "abc"], ["city", "michigan"], ["state", "tx"], ["zip", 12345], ["school", "wesdtyf"], ["years_in_practice", 1], ["created_at", "2015-10-23 04:01:44.333825"], ["updated_at", "2015-10-23 04:01:44.333825"]]
+  [1m[35m (20.1ms)[0m  commit transaction
+Redirected to http://localhost:3000/doctors/3
+Completed 302 Found in 50ms (ActiveRecord: 44.1ms)
+
+
+Started GET "/doctors/3" for 127.0.0.1 at 2015-10-23 00:01:44 -0400
+Processing by DoctorsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mDoctor Load (0.2ms)[0m  [1mSELECT  "doctors".* FROM "doctors" WHERE "doctors"."id" = ? LIMIT 1[0m  [["id", 3]]
+  Rendered doctors/show.html.erb within layouts/application (0.8ms)
+Completed 200 OK in 67ms (Views: 61.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/appointments" for 127.0.0.1 at 2015-10-23 00:01:52 -0400
+Processing by AppointmentsController#index as HTML
+  [1m[35mAppointment Load (0.2ms)[0m  SELECT "appointments".* FROM "appointments"
+  Rendered appointments/index.html.erb within layouts/application (32.4ms)
+Completed 200 OK in 134ms (Views: 128.4ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/appointments/new" for 127.0.0.1 at 2015-10-23 00:01:55 -0400
+Processing by AppointmentsController#new as HTML
+  Rendered appointments/_form.html.erb (3.6ms)
+  Rendered appointments/new.html.erb within layouts/application (4.5ms)
+Completed 200 OK in 59ms (Views: 58.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/appointments" for 127.0.0.1 at 2015-10-23 00:02:03 -0400
+Processing by AppointmentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"Sms/MIabJdc6E1sJGFHjO4GuIxnG2QqWKTAmElAVfjO4p5wH/PPlXiVPHcLdgqK22IHgIrc81Hj8wX1VeRD8SA==", "appointment"=>{"date_of_visit(1i)"=>"2015", "date_of_visit(2i)"=>"5", "date_of_visit(3i)"=>"23", "reminder_of_appointment"=>"u", "reason_for_visit"=>"", "pet_id"=>"", "doctor_id"=>""}, "commit"=>"Create Appointment"}
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  rollback transaction
+  Rendered appointments/_form.html.erb (6.6ms)
+  Rendered appointments/new.html.erb within layouts/application (9.0ms)
+Completed 200 OK in 84ms (Views: 69.7ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/appointments" for 127.0.0.1 at 2015-10-23 00:02:34 -0400
+Processing by AppointmentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"hJ7Ks+YYTrm7S4NYtKEV2XQ+Ys/cpGpiqFATRgwCAmZ2UmmEnHCOMKQXxZNxclRULRGh9K1BtIx9oUgBJQeAHQ==", "appointment"=>{"date_of_visit(1i)"=>"2015", "date_of_visit(2i)"=>"11", "date_of_visit(3i)"=>"23", "reminder_of_appointment"=>"u", "reason_for_visit"=>"some thing raeson", "pet_id"=>"dog", "doctor_id"=>"madhu"}, "commit"=>"Create Appointment"}
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "appointments" ("reminder_of_appointment", "reason_for_visit", "pet_id", "doctor_id", "date_of_visit", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["reminder_of_appointment", "u"], ["reason_for_visit", "some thing raeson"], ["pet_id", 0], ["doctor_id", 0], ["date_of_visit", "2015-11-23"], ["created_at", "2015-10-23 04:02:34.991364"], ["updated_at", "2015-10-23 04:02:34.991364"]]
+  [1m[36m (16.9ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/appointments/2
+Completed 302 Found in 26ms (ActiveRecord: 17.4ms)
+
+
+Started GET "/appointments/2" for 127.0.0.1 at 2015-10-23 00:02:35 -0400
+Processing by AppointmentsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[35mAppointment Load (4.4ms)[0m  SELECT  "appointments".* FROM "appointments" WHERE "appointments"."id" = ? LIMIT 1  [["id", 2]]
+  [1m[36mPet Load (0.2ms)[0m  [1mSELECT  "pets".* FROM "pets" WHERE "pets"."id" = ? LIMIT 1[0m  [["id", 0]]
+  [1m[35mDoctor Load (0.5ms)[0m  SELECT  "doctors".* FROM "doctors" WHERE "doctors"."id" = ? LIMIT 1  [["id", 0]]
+  Rendered appointments/show.html.erb within layouts/application (56.1ms)
+Completed 200 OK in 195ms (Views: 183.5ms | ActiveRecord: 5.5ms)
+
+
+Started GET "/appointments" for 127.0.0.1 at 2015-10-23 00:02:38 -0400
+Processing by AppointmentsController#index as HTML
+  [1m[36mAppointment Load (0.1ms)[0m  [1mSELECT "appointments".* FROM "appointments"[0m
+  [1m[35mPet Load (0.1ms)[0m  SELECT  "pets".* FROM "pets" WHERE "pets"."id" = ? LIMIT 1  [["id", 0]]
+  [1m[36mDoctor Load (0.1ms)[0m  [1mSELECT  "doctors".* FROM "doctors" WHERE "doctors"."id" = ? LIMIT 1[0m  [["id", 0]]
+  Rendered appointments/index.html.erb within layouts/application (3.5ms)
+Completed 200 OK in 56ms (Views: 54.9ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/appointments/new" for 127.0.0.1 at 2015-10-23 00:02:40 -0400
+Processing by AppointmentsController#new as HTML
+  Rendered appointments/_form.html.erb (3.3ms)
+  Rendered appointments/new.html.erb within layouts/application (4.0ms)
+Completed 200 OK in 46ms (Views: 45.5ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/appointments" for 127.0.0.1 at 2015-10-23 00:03:27 -0400
+Processing by AppointmentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"W93s2yCQ+1GC/WJgT5DwmcK8cjlq4KrB7BuyJI0IvjWpEU/sWvg72J2hJKuKQ7EUm5OxAhsFdC856uljpA08Tg==", "appointment"=>{"date_of_visit(1i)"=>"2018", "date_of_visit(2i)"=>"4", "date_of_visit(3i)"=>"13", "reminder_of_appointment"=>"u have appointment ", "reason_for_visit"=>"leg fracture", "pet_id"=>"cat", "doctor_id"=>"mohan"}, "commit"=>"Create Appointment"}
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "appointments" ("reminder_of_appointment", "reason_for_visit", "pet_id", "doctor_id", "date_of_visit", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["reminder_of_appointment", "u have appointment "], ["reason_for_visit", "leg fracture"], ["pet_id", 0], ["doctor_id", 0], ["date_of_visit", "2018-04-13"], ["created_at", "2015-10-23 04:03:27.318528"], ["updated_at", "2015-10-23 04:03:27.318528"]]
+  [1m[35m (4.1ms)[0m  commit transaction
+Redirected to http://localhost:3000/appointments/3
+Completed 302 Found in 10ms (ActiveRecord: 4.5ms)
+
+
+Started GET "/appointments/3" for 127.0.0.1 at 2015-10-23 00:03:27 -0400
+Processing by AppointmentsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mAppointment Load (0.1ms)[0m  [1mSELECT  "appointments".* FROM "appointments" WHERE "appointments"."id" = ? LIMIT 1[0m  [["id", 3]]
+  [1m[35mPet Load (0.3ms)[0m  SELECT  "pets".* FROM "pets" WHERE "pets"."id" = ? LIMIT 1  [["id", 0]]
+  [1m[36mDoctor Load (0.1ms)[0m  [1mSELECT  "doctors".* FROM "doctors" WHERE "doctors"."id" = ? LIMIT 1[0m  [["id", 0]]
+  Rendered appointments/show.html.erb within layouts/application (3.9ms)
+Completed 200 OK in 52ms (Views: 50.3ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/pets" for 127.0.0.1 at 2015-10-23 00:03:34 -0400
+Processing by PetsController#index as HTML
+  [1m[35mPet Load (0.2ms)[0m  SELECT "pets".* FROM "pets"
+  Rendered pets/index.html.erb within layouts/application (20.5ms)
+Completed 200 OK in 79ms (Views: 76.4ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/pets/new" for 127.0.0.1 at 2015-10-23 00:03:38 -0400
+Processing by PetsController#new as HTML
+  Rendered pets/_form.html.erb (16.3ms)
+  Rendered pets/new.html.erb within layouts/application (18.3ms)
+Completed 200 OK in 136ms (Views: 134.8ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/pets" for 127.0.0.1 at 2015-10-23 00:03:53 -0400
+Processing by PetsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"iX0wd7ImeWaoO1YB/Y1MPPFCaXjCOaCQAqLYJ7hoehR7sZNAyE6577dnEMo4Xg2xqG2qQ7Pcfn7XU4NgkW34bw==", "pet"=>{"pet_name"=>"jolly", "type_of_pet"=>"dat", "breed"=>"", "age"=>"", "weight"=>"", "date_of_visit(1i)"=>"2015", "date_of_visit(2i)"=>"10", "date_of_visit(3i)"=>"23", "customer_id"=>""}, "commit"=>"Create Pet"}
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  Rendered pets/_form.html.erb (7.8ms)
+  Rendered pets/new.html.erb within layouts/application (15.5ms)
+Completed 200 OK in 72ms (Views: 66.9ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/pets" for 127.0.0.1 at 2015-10-23 00:04:24 -0400
+Processing by PetsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"7ZaEXzbXAz4iKn988Bz+Z92VgQR57046XX7TajS22CAfWidoTL/Dtz12Obc1z7/qhLpCPwgKkNSIj4gtHbNaWw==", "pet"=>{"pet_name"=>"jolly", "type_of_pet"=>"dog", "breed"=>"dolmission", "age"=>"12", "weight"=>"23", "date_of_visit(1i)"=>"2015", "date_of_visit(2i)"=>"10", "date_of_visit(3i)"=>"23", "customer_id"=>"madhu"}, "commit"=>"Create Pet"}
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "pets" ("pet_name", "type_of_pet", "breed", "age", "weight", "customer_id", "date_of_visit", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)  [["pet_name", "jolly"], ["type_of_pet", "dog"], ["breed", "dolmission"], ["age", 12], ["weight", 23], ["customer_id", 0], ["date_of_visit", "2015-10-23"], ["created_at", "2015-10-23 04:04:24.351801"], ["updated_at", "2015-10-23 04:04:24.351801"]]
+  [1m[36m (3.8ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/pets/2
+Completed 302 Found in 10ms (ActiveRecord: 4.1ms)
+
+
+Started GET "/pets/2" for 127.0.0.1 at 2015-10-23 00:04:24 -0400
+Processing by PetsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[35mPet Load (0.2ms)[0m  SELECT  "pets".* FROM "pets" WHERE "pets"."id" = ? LIMIT 1  [["id", 2]]
+  [1m[36mCustomer Load (0.2ms)[0m  [1mSELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1[0m  [["id", 0]]
+  Rendered pets/show.html.erb within layouts/application (2.6ms)
+Completed 200 OK in 53ms (Views: 50.1ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/pets" for 127.0.0.1 at 2015-10-23 00:04:27 -0400
+Processing by PetsController#index as HTML
+  [1m[35mPet Load (0.1ms)[0m  SELECT "pets".* FROM "pets"
+  [1m[36mCustomer Load (0.1ms)[0m  [1mSELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1[0m  [["id", 0]]
+  Rendered pets/index.html.erb within layouts/application (2.4ms)
+Completed 200 OK in 48ms (Views: 47.4ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/pets/new" for 127.0.0.1 at 2015-10-23 00:04:31 -0400
+Processing by PetsController#new as HTML
+  Rendered pets/_form.html.erb (3.9ms)
+  Rendered pets/new.html.erb within layouts/application (4.7ms)
+Completed 200 OK in 60ms (Views: 58.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/pets" for 127.0.0.1 at 2015-10-23 00:05:05 -0400
+Processing by PetsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"S4LkN+nSuPO4xzW7f8bkHNWCfj71k1P8MeI28/YBifS5TkcAk7p4eqebc3C6FaWRjK29BYR2jRLkE2203wQLjw==", "pet"=>{"pet_name"=>"abc", "type_of_pet"=>"cat", "breed"=>"home", "age"=>"25", "weight"=>"38", "date_of_visit(1i)"=>"2015", "date_of_visit(2i)"=>"4", "date_of_visit(3i)"=>"23", "customer_id"=>"xyx"}, "commit"=>"Create Pet"}
+  [1m[35m (0.4ms)[0m  begin transaction
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "pets" ("pet_name", "type_of_pet", "breed", "age", "weight", "customer_id", "date_of_visit", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["pet_name", "abc"], ["type_of_pet", "cat"], ["breed", "home"], ["age", 25], ["weight", 38], ["customer_id", 0], ["date_of_visit", "2015-04-23"], ["created_at", "2015-10-23 04:05:05.546523"], ["updated_at", "2015-10-23 04:05:05.546523"]]
+  [1m[35m (15.0ms)[0m  commit transaction
+Redirected to http://localhost:3000/pets/3
+Completed 302 Found in 23ms (ActiveRecord: 15.7ms)
+
+
+Started GET "/pets/3" for 127.0.0.1 at 2015-10-23 00:05:05 -0400
+Processing by PetsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mPet Load (0.1ms)[0m  [1mSELECT  "pets".* FROM "pets" WHERE "pets"."id" = ? LIMIT 1[0m  [["id", 3]]
+  [1m[35mCustomer Load (0.1ms)[0m  SELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1  [["id", 0]]
+  Rendered pets/show.html.erb within layouts/application (2.2ms)
+Completed 200 OK in 55ms (Views: 54.0ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/pets" for 127.0.0.1 at 2015-10-23 00:05:08 -0400
+Processing by PetsController#index as HTML
+  [1m[36mPet Load (0.2ms)[0m  [1mSELECT "pets".* FROM "pets"[0m
+  [1m[35mCustomer Load (0.1ms)[0m  SELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1  [["id", 0]]
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1[0m  [["id", 0]]
+  Rendered pets/index.html.erb within layouts/application (2.3ms)
+Completed 200 OK in 46ms (Views: 45.2ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/customers" for 127.0.0.1 at 2015-10-23 00:05:12 -0400
+Processing by CustomersController#index as HTML
+  [1m[35mCustomer Load (0.4ms)[0m  SELECT "customers".* FROM "customers"
+  Rendered customers/index.html.erb within layouts/application (23.4ms)
+Completed 200 OK in 85ms (Views: 83.1ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/customers/new" for 127.0.0.1 at 2015-10-23 00:05:17 -0400
+Processing by CustomersController#new as HTML
+  Rendered customers/_form.html.erb (1.6ms)
+  Rendered customers/new.html.erb within layouts/application (2.2ms)
+Completed 200 OK in 57ms (Views: 55.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/customers" for 127.0.0.1 at 2015-10-23 00:05:23 -0400
+Processing by CustomersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"g15uoXG69QK/N06NLH0IspCPgl2v0j0tvS2xNn5n+QRxks2WC9I1i6BrCEbprkk/yaBBZt4348No3OpxV2J7fw==", "customer"=>{"customer_name"=>"tony"}, "commit"=>"Create Customer"}
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "customers" ("customer_name", "created_at", "updated_at") VALUES (?, ?, ?)  [["customer_name", "tony"], ["created_at", "2015-10-23 04:05:23.308037"], ["updated_at", "2015-10-23 04:05:23.308037"]]
+  [1m[36m (6.6ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/customers/2
+Completed 302 Found in 12ms (ActiveRecord: 7.1ms)
+
+
+Started GET "/customers/2" for 127.0.0.1 at 2015-10-23 00:05:23 -0400
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[35mCustomer Load (0.1ms)[0m  SELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1  [["id", 2]]
+  Rendered customers/show.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 53ms (Views: 50.9ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/customers/2/edit" for 127.0.0.1 at 2015-10-23 00:05:26 -0400
+Processing by CustomersController#edit as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mCustomer Load (0.1ms)[0m  [1mSELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1[0m  [["id", 2]]
+  Rendered customers/_form.html.erb (1.2ms)
+  Rendered customers/edit.html.erb within layouts/application (2.8ms)
+Completed 200 OK in 48ms (Views: 47.0ms | ActiveRecord: 0.1ms)
+
+
+Started PATCH "/customers/2" for 127.0.0.1 at 2015-10-23 00:05:28 -0400
+Processing by CustomersController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"ZhBvYwFdToBeLiH0SBkuVr+cY/XpVTs534DGyhFxdGiU3MxUezWOCUFyZz+Nym/b5rOgzpiw5dcKcZ2NOHT2Ew==", "customer"=>{"customer_name"=>"tony"}, "commit"=>"Update Customer", "id"=>"2"}
+  [1m[35mCustomer Load (0.2ms)[0m  SELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1  [["id", 2]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  commit transaction
+Redirected to http://localhost:3000/customers/2
+Completed 302 Found in 3ms (ActiveRecord: 0.3ms)
+
+
+Started GET "/customers/2" for 127.0.0.1 at 2015-10-23 00:05:28 -0400
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mCustomer Load (0.1ms)[0m  [1mSELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1[0m  [["id", 2]]
+  Rendered customers/show.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 47ms (Views: 46.1ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/customers" for 127.0.0.1 at 2015-10-23 00:05:29 -0400
+Processing by CustomersController#index as HTML
+  [1m[35mCustomer Load (0.2ms)[0m  SELECT "customers".* FROM "customers"
+  Rendered customers/index.html.erb within layouts/application (1.8ms)
+Completed 200 OK in 50ms (Views: 49.2ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/customers/2" for 127.0.0.1 at 2015-10-23 00:05:31 -0400
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mCustomer Load (0.1ms)[0m  [1mSELECT  "customers".* FROM "customers" WHERE "customers"."id" = ? LIMIT 1[0m  [["id", 2]]
+  Rendered customers/show.html.erb within layouts/application (0.7ms)
+Completed 200 OK in 55ms (Views: 54.2ms | ActiveRecord: 0.1ms)
